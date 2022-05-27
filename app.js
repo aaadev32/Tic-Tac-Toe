@@ -1,5 +1,5 @@
 let gameBoard = {
-    game: []
+    game: [2]
 
 };
 
@@ -9,7 +9,7 @@ const gameDisplay = (function () {
         div.addEventListener('click', function () {
             let blockId = document.getElementById(event.target);
             console.log(blockId);
-            blockId.style.backgroundColor = 'black'; //test
+            blockId.style.backgroundColor = 'black'; //test  ////////////
         });
     });
 })();
@@ -18,21 +18,24 @@ const gameDisplay = (function () {
 const playGame = (function  ()  {
 
     let temp = gameBoard.game.length;
-    let turnNumber = parseInt(temp);
+    console.log(temp);
+    let turnNumber = parseInt(temp + 1);
 
     const whosTurn = (turnNumber) => {
-        if (turnNumber + 1 % 2 == 0) {
+        if (turnNumber % 2 == 0) {
             return false;
         } else {
             return true;
         }
     }
+    console.log(whosTurn(turnNumber));
 
     const play = () => {
         //display player X or O's turn
-        let turnNumber = gameBoard.game.length;
         if (whosTurn(turnNumber) == true) {
-            document.getElementById('player-x').style.backgroundColor = 'black'; //test
+            document.getElementById('player-x').textContent = `Player X's Turn`; //test
+        } else if(whosTurn(turnNumber) == false){
+            document.getElementById('player-o').textContent = `Player O's Turn`;
         }
     }
 
