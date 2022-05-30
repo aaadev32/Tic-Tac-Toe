@@ -1,45 +1,118 @@
 const gameBoard = (function () {
-    game = [1, 2]
-    return game;
+    game = []
+    playerX = [];
+    playerO = [];
+    //make a loop that takes the game array and displays the choices to the board through the grid ids
+    for (i = 0; i < game.length; i++) {
+        document.getElementById(`grid-${i}`).textContent = gameBoard.game.push(i);
+    }
+
+
+    return game, playerX, playerO;
 })();
 
 //gives each player their turn
-const playRound = (function  ()  {
+const playRound = () => {
 
     let temp = game.length;
-    console.log(temp);
     let turnNumber = parseInt(temp + 1);
 
-    const whosTurn = (turnNumber) => {
+    const whosTurn = () => {
         if (turnNumber % 2 == 0) {
             return false;
         } else {
             return true;
         }
     }
-    console.log(whosTurn(turnNumber));
+
 
     const play = () => {
         //display player X or O's turn
         if (whosTurn(turnNumber) == true) {
-            document.getElementById('player-x').textContent = `Player X's Turn`; //test
-        } else if(whosTurn(turnNumber) == false){
-            document.getElementById('player-o').textContent = `Player O's Turn`;
+
+            document.getElementById('prompt').textContent = '';
+            document.getElementById('prompt').textContent = `Player X's Turn`;
+            console.log(`player-x turn`);
+
+            return true;
+        } else if (whosTurn(turnNumber) == false) {
+
+            document.getElementById('prompt').textContent = '';
+            document.getElementById('prompt').textContent = `Player O's Turn`;
+            console.log(`player-o turn`);
+
+            return false;
         }
+
     }
 
-    return play;
-})();
 
-//if we’re writing any sort of game, we’re probably going to want objects to describe our players and encapsulate all of the things our players can do (functions!).
-const player = (move) => {
-    return () => {
-        let playerX = [];
-        let playerO = [];
+
+    const winCondition = () => {
+        //check player moves for certain combinations that create a winning condition to check for winner, if none declare draw.
+        const winInstance0 = ['grid-0', 'grid-1', 'grid-2'];
+        const winInstance1 = ['grid-2', 'grid-5', 'grid-8']
+        const winInstance2 = ['grid-8', 'grid-7', 'grid-6'];
+        const winInstance3 = ['grid-6', 'grid-3', 'grid-0'];
+        const winInstance4 = ['grid-0', 'grid-4', 'grid-8'];
+        const winInstance5 = ['grid-2', 'grid-4', 'grid-6'];
+        const winInstance6 = ['grid-1', 'grid-4', 'grid-7'];
+        const winInstance7 = ['grid-3', 'grid-4', 'grid-5'];
+        let playerXResult = false;
+        let playerOResult = false;
+
+        const arrayComparison = (playerArr, winInstance) => {
+            let streak = 0;
+            for (let i = 0; i < winInstance.length; i++) {
+                for (let j = 0; j < playerArr.length; i++) {
+                    if (playerArr[j] == winInstance[i]) {
+                        streak++;
+                    }
+
+                    if (streak == 3) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+        };
+
+        for (let i = 0; i < 8; i++) {
+            if (arrayComparison(playerX, `winInstance${i}`) == true) {
+                playerXResult = true;
+                return alert('Player X Wins!')
+            }
+        }
+
+        for (let i = 0; i < 8; i++) {
+            if (arrayComparison(playerO, `winInstance${i}`) == true) {
+                playerOResult = true;
+                return alert('Player O Wins!')
+            }
+        }
+
+        if (game.length >= 9) {
+            if (playerOResult == false && playerXResult == false) {
+                return alert('Its A Draw');
+            }
+        }
+
     };
+
+    return { play, whosTurn, winCondition };
 };
 
-//controls the execution of functions when the player is interacting with the playable board
+const playerFactory = (move) => {
+
+    const playerXMove = (move) => { playerX.push(move), game.push(move); }
+    const playerOMove = (move) => { playerO.push(move), game.push(move); }
+
+    return { playerXMove, playerOMove }
+};
+
+
 const gameDisplay = (function () {
     const gridBlock = document.getElementsByClassName('grid')
     Array.from(gridBlock).forEach(div => {
@@ -47,18 +120,30 @@ const gameDisplay = (function () {
         div.addEventListener('click', function () {
 
             let blockId = div.id;
+            console.log(blockId)
+            if (div.firstChild != null) {
+                alert('please select an empty box')
+                return 1;
+            } else if (playRound().play() == true) {
 
-            if(playRound.play == false){
                 div.textContent = 'X';
-                playerX.push(blockId);
-            }else {
+                playerFactory().playerXMove(blockId);
+                console.log(`playerX choice is ${gameBoard.playerX}`);
+
+            } else if (playRound().play() == false) {
+
                 div.textContent = 'O';
-                playerY.push(blockId);
+                playerFactory().playerOMove(blockId);
+                console.log(`playerO choice is ${gameBoard.playerO}`);
+
             }
-            playRound().play;
+            console.log(playRound().play())
+            console.log(game, playerX, playerO);
+
+
+            playRound().winCondition();
+
 
         });
     });
 })();
-
-playRound().play; //shows player turn immediatley upon page render
