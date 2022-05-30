@@ -39,8 +39,8 @@ h1, h2{
     height: 350px;
     width: 350px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 0;
 }
 
