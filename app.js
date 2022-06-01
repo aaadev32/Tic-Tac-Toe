@@ -1,3 +1,4 @@
+
 const gameBoard = (function () {
     game = []
     playerX = [];
@@ -12,7 +13,7 @@ const gameBoard = (function () {
 })();
 
 //gives each player their turn
-const playRound = () => {
+const play = () => {
 
     let temp = game.length;
     let turnNumber = parseInt(temp + 1);
@@ -25,8 +26,7 @@ const playRound = () => {
         }
     }
 
-
-    const play = () => {
+    const playerPrompt = () => {
         //display player X or O's turn
         if (whosTurn(turnNumber) == true) {
 
@@ -44,12 +44,31 @@ const playRound = () => {
             return false;
         }
 
-    }
+    };
 
+    const arrayComparison = (playerArr, winInstance) => {
+        let streak = 0;
+
+        for (let i = 0; i < winInstance.length; i++) {
+            for (let j = 0; j < playerArr.length; i++) {
+                if (playerArr[j] === winInstance[i]) { //always true fix plz
+                    streak++;
+                    console.log('streak')
+                }
+
+                if (streak == 3) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+    };
 
 
     const winCondition = () => {
-        //check player moves for certain combinations that create a winning condition to check for winner, if none declare draw.
+
         const winInstance0 = ['grid-0', 'grid-1', 'grid-2'];
         const winInstance1 = ['grid-2', 'grid-5', 'grid-8']
         const winInstance2 = ['grid-8', 'grid-7', 'grid-6'];
@@ -58,36 +77,21 @@ const playRound = () => {
         const winInstance5 = ['grid-2', 'grid-4', 'grid-6'];
         const winInstance6 = ['grid-1', 'grid-4', 'grid-7'];
         const winInstance7 = ['grid-3', 'grid-4', 'grid-5'];
+        const instanceArr = [winInstance0, winInstance1, winInstance2, winInstance3, winInstance4, winInstance5, winInstance6, winInstance7,]
         let playerXResult = false;
         let playerOResult = false;
 
-        const arrayComparison = (playerArr, winInstance) => {
-            let streak = 0;
-            for (let i = 0; i < winInstance.length; i++) {
-                for (let j = 0; j < playerArr.length; i++) {
-                    if (playerArr[j] == winInstance[i]) {
-                        streak++;
-                    }
-
-                    if (streak == 3) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-
-        };
-
         for (let i = 0; i < 8; i++) {
-            if (arrayComparison(playerX, `winInstance${i}`) == true) {
+            if (arrayComparison(playerX, instanceArr[i]) == true) {
                 playerXResult = true;
+                console.log('arraycomparison is working!')
                 return alert('Player X Wins!')
             }
         }
 
         for (let i = 0; i < 8; i++) {
-            if (arrayComparison(playerO, `winInstance${i}`) == true) {
+            if (arrayComparison(playerO, instanceArr[i]) == true) {
+                console.log('arraycomparison is working!')
                 playerOResult = true;
                 return alert('Player O Wins!')
             }
@@ -97,11 +101,12 @@ const playRound = () => {
             if (playerOResult == false && playerXResult == false) {
                 return alert('Its A Draw');
             }
+
         }
 
     };
 
-    return { play, whosTurn, winCondition };
+    return { playerPrompt, winCondition, arrayComparison };
 };
 
 const playerFactory = (move) => {
@@ -124,26 +129,22 @@ const gameDisplay = (function () {
             if (div.firstChild != null) {
                 alert('please select an empty box')
                 return 1;
-            } else if (playRound().play() == true) {
+            } else if (play().playerPrompt() == true) {
 
                 div.textContent = 'X';
                 playerFactory().playerXMove(blockId);
-                console.log(`playerX choice is ${gameBoard.playerX}`);
 
-            } else if (playRound().play() == false) {
+            } else if (play().playerPrompt() == false) {
 
                 div.textContent = 'O';
                 playerFactory().playerOMove(blockId);
-                console.log(`playerO choice is ${gameBoard.playerO}`);
 
             }
-            console.log(playRound().play())
             console.log(game, playerX, playerO);
-
-
-            playRound().winCondition();
-
+            play().winCondition();
 
         });
     });
 })();
+
+//line 54
