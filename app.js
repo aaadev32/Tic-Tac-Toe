@@ -51,19 +51,22 @@ const play = () => {
 
         for (let i = 0; i < winInstance.length; i++) {
             for (let j = 0; j < playerArr.length; i++) {
+
+                console.log(playerArr[j], winInstance[i]);
+                console.log(playerArr[j] === winInstance[i]);
+
                 if (playerArr[j] === winInstance[i]) { //always true fix plz
                     streak++;
                     console.log('streak')
                 }
 
-                if (streak == 3) {
+                if (streak === 3) {
                     return true;
-                } else {
-                    return false;
-                }
+                }else return 1;
             }
         }
-
+        streak = 0;
+        return false;
     };
 
 
@@ -82,6 +85,7 @@ const play = () => {
         let playerOResult = false;
 
         for (let i = 0; i < 8; i++) {
+            console.log(playerX, instanceArr[i]);
             if (arrayComparison(playerX, instanceArr[i]) == true) {
                 playerXResult = true;
                 console.log('arraycomparison is working!')
