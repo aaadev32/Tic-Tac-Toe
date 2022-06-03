@@ -46,59 +46,101 @@ const play = () => {
 
     };
 
-    const arrayComparison = (playerArr, winInstance) => {
-        let streak = 0;
-
-        for (let i = 0; i < winInstance.length; i++) {
-            for (let j = 0; j < playerArr.length; i++) {
-
-                console.log(playerArr[j], winInstance[i]);
-                console.log(playerArr[j] === winInstance[i]);
-
-                if (playerArr[j] === winInstance[i]) { //always true fix plz
-                    streak++;
-                    console.log('streak')
-                }
-
-                if (streak === 3) {
-                    return true;
-                }else return 1;
-            }
-        }
-        streak = 0;
-        return false;
-    };
+    //arrays must be turned into strings using .toString to compare them
 
 
     const winCondition = () => {
 
-        const winInstance0 = ['grid-0', 'grid-1', 'grid-2'];
-        const winInstance1 = ['grid-2', 'grid-5', 'grid-8']
-        const winInstance2 = ['grid-8', 'grid-7', 'grid-6'];
-        const winInstance3 = ['grid-6', 'grid-3', 'grid-0'];
-        const winInstance4 = ['grid-0', 'grid-4', 'grid-8'];
-        const winInstance5 = ['grid-2', 'grid-4', 'grid-6'];
-        const winInstance6 = ['grid-1', 'grid-4', 'grid-7'];
-        const winInstance7 = ['grid-3', 'grid-4', 'grid-5'];
-        const instanceArr = [winInstance0, winInstance1, winInstance2, winInstance3, winInstance4, winInstance5, winInstance6, winInstance7,]
-        let playerXResult = false;
-        let playerOResult = false;
+        const conditions = (int) => {
 
-        for (let i = 0; i < 8; i++) {
-            console.log(playerX, instanceArr[i]);
-            if (arrayComparison(playerX, instanceArr[i]) == true) {
-                playerXResult = true;
-                console.log('arraycomparison is working!')
-                return alert('Player X Wins!')
+            if (int == 0) {
+                winInstance0 = ['grid-0', 'grid-1', 'grid-2'];
+                let result = [...winInstance0];
+                return result;
+            } else if (int == 1) {
+                winInstance1 = ['grid-2', 'grid-5', 'grid-8']
+                let result = [...winInstance1];
+                return result;
+            } else if (int == 2) {
+                winInstance2 = ['grid-8', 'grid-7', 'grid-6'];
+                let result = [...winInstance2];
+                return result;
+            } else if (int == 3) {
+                winInstance3 = ['grid-6', 'grid-3', 'grid-0'];
+                let result = [...winInstance3];
+                return result;
+            } else if (int == 4) {
+                winInstance4 = ['grid-0', 'grid-4', 'grid-8'];
+                let result = [...winInstance4];
+                return result;
+            } else if (int == 5) {
+                winInstance5 = ['grid-2', 'grid-4', 'grid-6'];
+                let result = [...winInstance5];
+                return result;
+            } else if (int == 6) {
+                winInstance6 = ['grid-1', 'grid-4', 'grid-7'];
+                let result = [...winInstance6];
+                return result;
+            } else if (int == 7) {
+                winInstance7 = ['grid-3', 'grid-4', 'grid-5'];
+                let result = [...winInstance7];
+                return result;
             }
         }
 
-        for (let i = 0; i < 8; i++) {
-            if (arrayComparison(playerO, instanceArr[i]) == true) {
-                console.log('arraycomparison is working!')
-                playerOResult = true;
-                return alert('Player O Wins!')
+        let playerXResult = false;
+        let playerOResult = false;
+        let streak = 0;
+        let instance = 0; // undefined??
+        let instanceIndex = null;
+
+        for (i = 0; i < 8; i++) {
+
+            for (j = 0; j < playerX.length; j++) {
+
+                instance = conditions(i);
+
+                for (k = 0; k < instance.length; k++) {
+
+                    instanceIndex = instance[k];
+
+                    if (playerX[j].includes(instanceIndex) == true) {
+                        streak++
+                        console.log(`playerX streak ${streak}`)
+                        if (streak == 3) {
+                            return alert('player X wins!');
+                        }
+                    }
+
+                }
             }
+            streak = 0;
+
+        }
+
+        for (i = 0; i < 8; i++) {
+
+            for (j = 0; j < playerO.length; j++) {
+
+                instance = conditions(i);
+                console.log(`playerO ${playerO[i]}`, `instance ${instance}`);
+
+                for (k = 0; k < instance.length; k++) {
+
+                    instanceIndex = instance[k];
+
+                    if (playerO[j].includes(instanceIndex) == true) {
+                        streak++
+                        console.log(`playerO streak ${streak}`)
+
+                        if (streak == 3) {
+                            return alert('player O wins!');
+                        }
+                    }
+                }
+            }
+            streak = 0;
+
         }
 
         if (game.length >= 9) {
@@ -109,9 +151,9 @@ const play = () => {
         }
 
     };
-
-    return { playerPrompt, winCondition, arrayComparison };
+    return { play, playerPrompt, winCondition };
 };
+
 
 const playerFactory = (move) => {
 
@@ -150,5 +192,3 @@ const gameDisplay = (function () {
         });
     });
 })();
-
-//line 54
