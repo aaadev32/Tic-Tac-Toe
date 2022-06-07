@@ -1,5 +1,5 @@
 
-const gameBoard = (function () {
+const gameBoard = (() => {
     game = []
     playerX = [];
     playerO = [];
@@ -8,8 +8,17 @@ const gameBoard = (function () {
         document.getElementById(`grid-${i}`).textContent = gameBoard.game.push(i);
     }
 
+    const clear = () => {
+        let gridDivs = document.getElementsByClassName('grid');
+        game = [];
+        playerX = [];
+        playerO = [];
+        Array.from(gridDivs).forEach(div => {
+            div.textContent = '';
+        });
+    }
 
-    return game, playerX, playerO;
+    return { game, playerX, playerO, clear };
 })();
 
 //gives each player their turn
@@ -93,7 +102,6 @@ const play = () => {
         let streak = 0;
         let instance = 0; // undefined??
         let instanceIndex = null;
-
         for (i = 0; i < 8; i++) {
 
             for (j = 0; j < playerX.length; j++) {
@@ -108,7 +116,8 @@ const play = () => {
                         streak++
                         console.log(`playerX streak ${streak}`)
                         if (streak == 3) {
-                            return alert('player X wins!');
+
+                            return alert('player X wins!'), gameBoard.clear();
                         }
                     }
 
@@ -134,7 +143,7 @@ const play = () => {
                         console.log(`playerO streak ${streak}`)
 
                         if (streak == 3) {
-                            return alert('player O wins!');
+                            return alert('player O wins!'), gameBoard.clear();;
                         }
                     }
                 }
@@ -145,7 +154,7 @@ const play = () => {
 
         if (game.length >= 9) {
             if (playerOResult == false && playerXResult == false) {
-                return alert('Its A Draw');
+                return alert('Its A Draw'), gameBoard.clear();;
             }
 
         }
